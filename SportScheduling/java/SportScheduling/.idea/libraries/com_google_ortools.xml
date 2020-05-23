@@ -1,0 +1,16 @@
+<component name="libraryTable">
+  <library name="com.google.ortools">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/com.google.ortools.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/protobuf.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/or-tools_VisualStudio2019-64bit_v7.6.7691.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <NATIVE>
+      <root url="file://$PROJECT_DIR$/lib" />
+    </NATIVE>
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/lib/or-tools_VisualStudio2019-64bit_v7.6.7691.zip!/or-tools_VisualStudio2019-64bit_v7.6.7691/examples/java" />
+    </SOURCES>
+  </library>
+</component>

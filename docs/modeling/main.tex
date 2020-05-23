@@ -1,0 +1,65 @@
+\documentclass{article}
+\usepackage[utf8]{vietnam}
+\usepackage{amsmath}
+
+\title{CBLS}
+\author{Xuan Vuong Dang}
+\date{May 2020}
+
+\begin{document}
+
+\maketitle
+
+\section{SportScheduling}
+
+\subsection{Input}
+\begin{itemize}
+    \item $T$ là số đội.
+    \item $W = 2T-2$ là số tuần.
+    \item $d_{uv}$ là khoảng cách di chuyển từ sân của đội $u$ đến sân của đội $v$.
+\end{itemize}
+
+\subsection{Notations}
+\begin{itemize}
+    \item $i, j, u, v \in [0\ldots T-1]$: là chỉ số của các đội.
+    \item $t \in [0\ldots W+1]$ là chỉ số tuần. Trong đó tuần $0$ là tuần trước tuần thi đấu đầu tiên, tuần $W+1$ là tuần sau tuần thi đấu cuối cùng.
+\end{itemize}
+
+\subsection{Variables}
+\begin{itemize}
+    \item $X_{ijt} \in \{0, 1\}$: Đội $j$ có ở trên sân của đội $i$ vào tuần thứ $t$ hay không.
+    \begin{itemize}
+        \item $X_{iit} = 1$ nếu đội $i$ ở trên sân nhà vào tuần $t$.
+        \item $X_{ii0} = X_{ii(W+1)} = 1$ để đảm bảo đội $i$ xuất phát tại sân nhà trước tuần thi đấu đầu tiên và trở về sân nhà sau tuần cuối cùng.
+        \item $X_{ij0} = X_{ij(W+1)} = 0, \forall i \ne j$.
+  \end{itemize}
+    \item $F_{iuvt} \in \{0, 1\}$: đội $i$ di chuyển từ sân của đội $u$ sang sân của đội $v$ sau tuần thứ $t$ hay không.
+\end{itemize}
+
+\subsection{Objective}
+\begin{equation}
+    \text{minimize} \sum_{\forall i, u, v \in [0\ldots T-1], t\in [0..W]} F_{iuvt} \times d_{uv}
+\end{equation}
+
+\subsection{Constraints}
+\begin{itemize}
+    \item Mỗi đội $i$ thi đấu đúng 1 trận mỗi tuần (cụ thể: hoặc là đội $i$ ở trên sân của đội $j \ne i$ hoặc đội $j \ne i$ ở trên sân của đội $i$ vào tuần thứ $t$):
+    \begin{equation}
+        \sum_{j \in T\setminus \{i\}} (X_{ijt} + X_{jit}) = 1, \forall i \in [0\ldots  T-1], t \in [1..W]
+    \end{equation}
+    \item Đội $i$ thi đấu trên sân nhà (tức là đội $i$ ở trên sân của $u = i$) vào tuần $t$ khi có một đội $j$ thi đấu trên sân của $i$ vào tuần đó:
+    \begin{equation}
+        X_{iit} = \sum_{j\in T\setminus \{i\}} X_{ijt}, \forall i \in [0\ldots T], t \in [1..W]
+    \end{equation}
+    \item Mỗi đội $j$ phải làm khách đúng 1 lần trên sân của $i$ (cụ thể: $j$ phải ở trên sân của $i \ne j$ đúng 1 lần, vì thế, $i$ cũng sẽ tiếp đón $j \ne i$ đúng 1 lần trong cả mùa giải).
+    \begin{equation}
+        \sum_{\forall t \in [1..W]} X_{ijt} = 1, \forall i \ne j
+    \end{equation}
+    \item Đội $i$ di chuyển từ sân của $u$ sang sân của $v$ sau tuần $t$ nếu $i$ ở trên sân của $u$ và tuần $t$ và ở trên sân của $v$ vào tuần $t+1$.
+    \begin{equation}
+        F_{iuvt} \geq X_{uit} + X_{vi(t+1)} - 1 \label{eq:1}
+    \end{equation}
+    \item Giải thích: Để minimize hàm mục tiêu, ta cần minimize thành phần $F_{iuvt}$, nên bộ giải sẽ luôn chọn $F_{iuvt}$ nhỏ nhất thoả mãn \eqref{eq:1}. Nếu $X_{iut} + X_{iv(t+1)} = 2$ (cụ thể: đội $i$ ở trên sân của $u$ vào tuần $t$ và ở trên sân của $v$ vào tuần $t+1$) thì giá trị $F_{iuvt}$ nhỏ nhất thoả mãn \eqref{eq:1} là $1$, ngược lại, ta hoàn toàn có thể chọn $F_{iuvt} = 0$ mà vẫn thoả mãn \eqref{eq:1}.
+\end{itemize}
+
+\end{document}
